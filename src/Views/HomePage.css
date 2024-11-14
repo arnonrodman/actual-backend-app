@@ -41,3 +41,12 @@
 .login-button:hover {
     background-color: #357abd;
 }
+
+.logout-button {
+    margin-top: 10px;
+    background-color: #dc3545;
+}
+
+.logout-button:hover {
+    background-color: #c82333;
+}

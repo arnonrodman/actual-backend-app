@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './HomePage.css';
 import { auth, signInWithPopup, googleProvider } from '../firebase';
+import { signOut } from 'firebase/auth';
 
 const HomePage = () => {
     const [isBlue, setIsBlue] = useState(false);
@@ -20,6 +21,16 @@ const HomePage = () => {
         }
     };
 
+    const handleLogout = async () => {
+        try {
+            await signOut(auth);
+            setUser(null);
+            console.log("User logged out");
+        } catch (error) {
+            console.error("Error logging out:", error);
+        }
+    };
+
     return (
         <div className="cafe-homepage">
             <h1>Welcome to Webcafe AI</h1>
@@ -27,9 +38,18 @@ const HomePage = () => {
             <div className={`cafe-color-box ${isBlue ? 'cafe-blue' : 'cafe-red'}`}></div>
             <button className="cafe-button" onClick={toggleColor}>Change Color</button>
             
-            <button className="cafe-button login-button" onClick={handleGoogleLogin}>
-                {user ? `Welcome, ${user.displayName}` : 'Login with Google'}
-            </button>
+            {user ? (
+                <div>
+                    <p>Welcome, {user.displayName}</p>
+                    <button className="cafe-button logout-button" onClick={handleLogout}>
+                        Logout
+                    </button>
+                </div>
+            ) : (
+                <button className="cafe-button login-button" onClick={handleGoogleLogin}>
+                    Login with Google
+                </button>
+            )}
         </div>
     );
 };
